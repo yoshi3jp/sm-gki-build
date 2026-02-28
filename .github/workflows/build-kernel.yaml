@@ -188,6 +188,39 @@ jobs:
       # -------------------------------
       # 5) Build Samsung kernel
       # -------------------------------
+      - name: Generate build.config (Samsung gen_build_config.py)
+        working-directory: samsung/kernel
+        env:
+          PROJECT: ${{ inputs.project }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          set -euo pipefail
+
+          # Output path exactly like Samsung's pattern, but parameterized.
+          OUT_REL="../out/target/product/${PROJECT}/obj/KERNEL_OBJ"
+          OUT_CFG="${OUT_REL}/build.config"
+
+          echo "PROJECT=${PROJECT}"
+          echo "MODE=${MODE}"
+          echo "OUT_CFG=${OUT_CFG}"
+
+          # Generate build.config
+          python3 kernel_device_modules-6.6/scripts/gen_build_config.py \
+            --kernel-defconfig mediatek-bazel_defconfig \
+            --kernel-defconfig-overlays "mt6768_overlay.config o22.config" \
+            --kernel-build-config-overlays "" \
+            -m "${MODE}" \
+            -o "${OUT_CFG}"
+
+          # Samsung's _setup_env.sh looks for $ROOT_DIR/build.config
+          # So point samsung/kernel/build.config to the generated one.
+          ln -sf "${OUT_CFG}" build.config
+
+          echo "=== build.config (symlink + target) ==="
+          ls -lah build.config "${OUT_CFG}"
+          echo "=== build.config preview (first 120 lines) ==="
+          sed -n '1,120p' build.config
+          
       - name: Build Samsung kernel (kernel_device_modules-6.6/build.sh)
         env:
           PROJECT: ${{ inputs.project }}
