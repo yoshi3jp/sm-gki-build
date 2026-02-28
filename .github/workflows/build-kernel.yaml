@@ -94,7 +94,7 @@ jobs:
           set -euo pipefail
           [[ -d .repo/manifests ]] || { echo "ERROR: gki/.repo/manifests missing after repo init"; exit 1; }
           echo "Repo sync (GKI) starting… cache-hit=${{ steps.cache-gki-repo.outputs.cache-hit }}"
-          repo sync -c -j"$(nproc)" --no-tags --depth=1
+          repo sync -c -j"$(nproc)" --no-tags
           echo "Repo sync (GKI) done."
 
       # -------------------------------
