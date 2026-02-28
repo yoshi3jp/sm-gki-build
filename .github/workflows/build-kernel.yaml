@@ -143,9 +143,9 @@ jobs:
             fi
           done
 
-          # 3b) Provide Samsung kernel/prebuilts via symlink
-          if [[ ! -d "$GKI_ROOT/kernel/prebuilts" ]]; then
-            echo "ERROR: GKI kernel/prebuilts missing."
+          # 3b) Provide Samsung prebuilts via symlink
+          if [[ ! -d "$GKI_ROOT/prebuilts" ]]; then
+            echo "ERROR: GKI prebuilts missing."
             exit 1
           fi
 
@@ -153,7 +153,7 @@ jobs:
           if [[ -e "$SAMSUNG_ROOT/kernel/prebuilts" ]]; then
             echo "WARN: samsung/kernel/prebuilts already exists; leaving as-is"
           else
-            ln -s "$GKI_ROOT/kernel/prebuilts" "$SAMSUNG_ROOT/kernel/prebuilts"
+            ln -s "$GKI_ROOT/prebuilts" "$SAMSUNG_ROOT/kernel/prebuilts"
           fi
 
       # -------------------------------
