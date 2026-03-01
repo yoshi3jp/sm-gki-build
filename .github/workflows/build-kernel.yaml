@@ -205,7 +205,8 @@ jobs:
           echo "OUT_CFG=${OUT_CFG}"
 
           # Generate build.config
-          python3 kernel_device_modules-6.6/scripts/gen_build_config.py \
+          PYH="$SAMSUNG_ROOT/kernel/prebuilts/build-tools/path/linux-x86/python3"
+          "$PYH" kernel_device_modules-6.6/scripts/gen_build_config.py \
             --kernel-defconfig mediatek-bazel_defconfig \
             --kernel-defconfig-overlays "mt6768_overlay.config o22.config" \
             --kernel-build-config-overlays "" \
